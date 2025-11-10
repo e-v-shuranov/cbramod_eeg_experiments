@@ -14,10 +14,12 @@ class CustomDataset(Dataset):
             self,
             data_dir,
             files,
+            n_chanels
     ):
         super(CustomDataset, self).__init__()
         self.data_dir = data_dir
         self.files = files
+        self.n_chanels = n_chanels
 
     def __len__(self):
         return len((self.files))
@@ -28,13 +30,15 @@ class CustomDataset(Dataset):
         data = data_dict['signal']
         label = int(data_dict['label'][0]-1)
         # data = signal.resample(data, 1000, axis=-1)
-        data = data.reshape(16, 5, 200)
-        return data/100, label
+        data = data[:self.n_chanels].reshape(self.n_chanels, 5, 200)
+        # data = data.reshape(self.n_chanels, 5, 200)
+        return data/100, label, file
 
     def collate(self, batch):
         x_data = np.array([x[0] for x in batch])
         y_label = np.array([x[1] for x in batch])
-        return to_tensor(x_data), to_tensor(y_label).long()
+        xs, ys, files = zip(*batch)
+        return to_tensor(x_data), to_tensor(y_label).long(),  list(files)
 
 
 class LoadDataset(object):
@@ -47,9 +51,9 @@ class LoadDataset(object):
         val_files = os.listdir(os.path.join(self.datasets_dir, "processed_eval"))
         test_files = os.listdir(os.path.join(self.datasets_dir, "processed_test"))
 
-        train_set = CustomDataset(os.path.join(self.datasets_dir, "processed_train"), train_files)
-        val_set = CustomDataset(os.path.join(self.datasets_dir, "processed_eval"), val_files)
-        test_set = CustomDataset(os.path.join(self.datasets_dir, "processed_test"), test_files)
+        train_set = CustomDataset(os.path.join(self.datasets_dir, "processed_train"), train_files, self.params.n_chanels)
+        val_set = CustomDataset(os.path.join(self.datasets_dir, "processed_eval"), val_files, self.params.n_chanels)
+        test_set = CustomDataset(os.path.join(self.datasets_dir, "processed_test"), test_files, self.params.n_chanels)
 
         print(len(train_set), len(val_set), len(test_set))
         print(len(train_set)+len(val_set)+len(test_set))

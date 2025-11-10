@@ -11,6 +11,7 @@ from models import model_for_faced, model_for_seedv, model_for_physio, model_for
     model_for_speech, model_for_mumtaz, model_for_seedvig, model_for_stress, model_for_tuev, model_for_tuab, \
     model_for_bciciv2a
 
+import os
 
 def main():
     parser = argparse.ArgumentParser(description='Big model downstream')
@@ -53,8 +54,37 @@ def main():
     parser.add_argument('--foundation_dir', type=str,
                         default='pretrained_weights/pretrained_weights.pth',
                         help='foundation_dir')
+    parser.add_argument('--use_cosine_warmup', type=bool,
+                        default=False, help='use_cosine_warmup')
+
+
+    parser.add_argument('--infer_only', type=bool,
+                        default=False, help='infer_only')
+    parser.add_argument('--model_for_test', type=str,
+                        default='path to model',
+                        help='model_for_test')
+
+    parser.add_argument('--n_chanels', type=int, default=16, help='n_chanels')
+
+    """############ params for external exerement with embedings ############"""
+    parser.add_argument('--path_emb', type=str,
+                        default='/media/public/Datasets/emb_cbr',
+                        help='path to store emb')
+
+    parser.add_argument('--store_embedings', type=bool,
+                        default=False, help='should we store embedings?')
 
     params = parser.parse_args()
+  #  params.use_pretrained_weights = False  # Не работает через параметры  :(
+
+    path_for_emb_storage = os.path.join(params.path_emb, params.downstream_dataset)
+    if not os.path.exists(path_for_emb_storage):
+        os.makedirs(path_for_emb_storage)
+    params.path_for_emb_storage_val = os.path.join(path_for_emb_storage, "val_emb.pkl")
+    params.path_for_emb_storage_test = os.path.join(path_for_emb_storage, "test_emb.pkl")
+    params.path_for_emb_storage_train = os.path.join(path_for_emb_storage, "train_emb.pkl")
+
+
     print(params)
 
     setup_seed(params.seed)

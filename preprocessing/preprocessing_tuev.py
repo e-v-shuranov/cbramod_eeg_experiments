@@ -164,42 +164,45 @@ def save_pickle(object, filename):
 TUEV dataset is downloaded from https://isip.piconepress.com/projects/tuh_eeg/html/downloads.shtml
 """
 
-root = "/data/zcb/data/TUEV/edf"
-target = "/data/datasets/BigDownstream/TUEV_refine"
+# root = "/data/zcb/data/TUEV/edf"
+# target = "/data/datasets/BigDownstream/TUEV_refine"
+root = "/media/public/Datasets/TUEV/tuev/edf"
+target = "/media/public/Datasets/cbramod_data/TURV_refine"
+if True:
+    train_out_dir = os.path.join(target, "processed_train")
+    eval_out_dir = os.path.join(target, "processed_eval")
 
-train_out_dir = os.path.join(target, "processed_train")
-eval_out_dir = os.path.join(target, "processed_eval")
+    if not os.path.exists(train_out_dir):
+        os.makedirs(train_out_dir)
+    if not os.path.exists(eval_out_dir):
+        os.makedirs(eval_out_dir)
 
-if not os.path.exists(train_out_dir):
-    os.makedirs(train_out_dir)
-if not os.path.exists(eval_out_dir):
-    os.makedirs(eval_out_dir)
+    BaseDirTrain = os.path.join(root, "train")
+    fs = 200
+    TrainFeatures = np.empty(
+        (0, 16, fs)
+    )  # 0 for lack of intialization, 22 for channels, fs for num of points
+    TrainLabels = np.empty([0, 1])
+    TrainOffendingChannel = np.empty([0, 1])
+    load_up_objects(
+        BaseDirTrain, TrainFeatures, TrainLabels, TrainOffendingChannel, train_out_dir
+    )
 
-BaseDirTrain = os.path.join(root, "train")
-fs = 200
-TrainFeatures = np.empty(
-    (0, 16, fs)
-)  # 0 for lack of intialization, 22 for channels, fs for num of points
-TrainLabels = np.empty([0, 1])
-TrainOffendingChannel = np.empty([0, 1])
-load_up_objects(
-    BaseDirTrain, TrainFeatures, TrainLabels, TrainOffendingChannel, train_out_dir
-)
-
-BaseDirEval = os.path.join(root, "eval")
-fs = 200
-EvalFeatures = np.empty(
-    (0, 16, fs)
-)  # 0 for lack of intialization, 22 for channels, fs for num of points
-EvalLabels = np.empty([0, 1])
-EvalOffendingChannel = np.empty([0, 1])
-load_up_objects(
-    BaseDirEval, EvalFeatures, EvalLabels, EvalOffendingChannel, eval_out_dir
-)
+    BaseDirEval = os.path.join(root, "eval")
+    fs = 200
+    EvalFeatures = np.empty(
+        (0, 16, fs)
+    )  # 0 for lack of intialization, 22 for channels, fs for num of points
+    EvalLabels = np.empty([0, 1])
+    EvalOffendingChannel = np.empty([0, 1])
+    load_up_objects(
+        BaseDirEval, EvalFeatures, EvalLabels, EvalOffendingChannel, eval_out_dir
+    )
 
 
 #transfer to train, eval, and test
-root = "/data/datasets/BigDownstream/TUEV_refine"
+# root = "/data/datasets/BigDownstream/TUEV_refine"
+root = "/media/public/Datasets/cbramod_data/TURV_refine"
 # seed = 4523
 # np.random.seed(seed)
 

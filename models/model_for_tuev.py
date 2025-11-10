@@ -33,7 +33,7 @@ class Model(nn.Module):
         elif param.classifier == 'all_patch_reps_twolayer':
             self.classifier = nn.Sequential(
                 Rearrange('b c s d -> b (c s d)'),
-                nn.Linear(16 * 5 * 200, 200),
+                nn.Linear(param.n_chanels * 5 * 200, 200),
                 nn.ELU(),
                 nn.Dropout(param.dropout),
                 nn.Linear(200, param.num_of_classes),
@@ -41,7 +41,7 @@ class Model(nn.Module):
         elif param.classifier == 'all_patch_reps':
             self.classifier = nn.Sequential(
                 Rearrange('b c s d -> b (c s d)'),
-                nn.Linear(16 * 5 * 200, 5 * 200),
+                nn.Linear(param.n_chanels * 5 * 200, 5 * 200),
                 nn.ELU(),
                 nn.Dropout(param.dropout),
                 nn.Linear(5 * 200, 200),
@@ -53,6 +53,7 @@ class Model(nn.Module):
     def forward(self, x):
         bz, ch_num, seq_len, patch_size = x.shape
         feats = self.backbone(x)
+    #    y = feats.clone().detach()  # shuranov tmp, for emb testing
         out = self.classifier(feats)
         return out
 

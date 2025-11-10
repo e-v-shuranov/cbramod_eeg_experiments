@@ -1,0 +1,161 @@
+
+
+finetune_main.py  TUEV, experiments 16 chanels compare with Labram
+
+ --epochs 50
+ --batch_size 64
+ --dropout 0.1
+ --optimizer AdamW
+ --lr 1e-6
+ --weight_decay 5e-2
+ --datasets_dir /media/public/Datasets/labram_data/TUEV/processed
+ --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_23_model
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --n_chanels 23
+ 
+ /media/public/Datasets/cbramod_data/TURV_refine
+ 
+finetune_main.py  Infer only:
+
+ --epochs 50
+ --batch_size 64
+ --dropout 0.1
+ --optimizer AdamW
+ --lr 1e-6
+ --weight_decay 5e-2
+ --datasets_dir /media/public/Datasets/labram_data/TUEV/processed
+ --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_model
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --foundation_dir /media/public/eshuranov/cbramod/models_weights/tuev_model/epoch50_acc_0.53679_kappa_0.52278_f1_0.76624.pth
+ --infer_only True
+ --model_for_test /media/public/eshuranov/cbramod/models_weights/tuev_model/epoch50_acc_0.53679_kappa_0.52278_f1_0.76624.pth
+ --use_pretrained_weights False
+
+
+--use_pretrained_weights False
+ --epochs 50
+ --batch_size 64
+ --dropout 0.1
+ --optimizer AdamW
+ --lr 1e-4
+ --weight_decay 5e-2
+ --datasets_dir /media/public/Datasets/cbramod_data/MDDPHCED/processed_lmdb_75hz
+ --model_dir /media/public/eshuranov/cbramod/models_weights/mumtaz_model
+ --downstream_dataset Mumtaz2016
+ --num_of_classes 2
+
+
+CBR TUEV reproducing   Важно - модель лежит в tuev_23_model. немного ошибся.. epoch86_acc_0.63446_kappa_0.58864_f1_0.78253.pth
+--epochs 100
+--batch_size 64
+--dropout 0.1
+--optimizer AdamW
+--lr 1e-8
+--weight_decay 5e-2
+--datasets_dir /media/public/Datasets/cbramod_data/TURV_refine/processed
+--model_dir /media/public/eshuranov/cbramod/models_weights/tuev_23_model
+--downstream_dataset TUEV
+--num_of_classes 6
+
+
+finetune_main.py  TUEV, experiments 16 chanels compare with Labram
+
+ --epochs 100
+ --batch_size 64
+ --dropout 0.1
+ --optimizer AdamW
+ --lr 1e-8
+ --weight_decay 5e-2
+ --datasets_dir /media/public/Datasets/labram_data/TUEV/processed
+ --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_16_model
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --n_chanels 16
+
+
+finetune_main.py  TUEV, experiments 23 chanels compare with Labram
+
+ --epochs 400
+ --batch_size 64
+ --dropout 0.1
+ --optimizer AdamW
+ --lr 1e-8
+ --weight_decay 5e-2
+ --datasets_dir /media/public/Datasets/labram_data/TUEV/processed
+ --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_16_model
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --n_chanels 23
+ TUEV cbr labram dataset 23 400 epoch fix  lr scheduler .txt
+
+
+
+
+ finetune_main.py  TUEV, experiments 23 chanels compare with Labram
+
+ --epochs 50
+ --batch_size 64
+ --dropout 0.1
+ --optimizer AdamW
+ --lr 1e-4
+ --weight_decay 5e-2
+ --datasets_dir /media/public/Datasets/labram_data/TUEV/processed
+ --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_16_model
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --n_chanels 23
+ TUEV cbr labram dataset 23 50epoch e4-e6.txt .txt
+
+
+  TUEV cbr labram dataset 23 100epoch e4-e9.txt .txt
+
+
+
+   finetune_main.py  ISRUC,
+
+ --epochs 50
+ --batch_size 16
+ --dropout 0.1
+ --optimizer AdamW
+ --lr 1e-4
+ --weight_decay 5e-2
+ --datasets_dir /mnt/public31/cbramod_data/ISRUC/precessed_filter_35
+ --model_dir /mnt/public31/public_global/eshuranov/cbramod/models_weights/ISRUC
+ --downstream_dataset ISRUC
+ --num_of_classes 6
+ --n_chanels 23
+
+
+
+
+TUEV - labram data
+
+ --datasets_dir /media/public/Datasets/labram_data/TUEV/processed
+ --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_model
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --infer_only True
+ --model_for_test /media/public/eshuranov/cbramod/models_weights/tuev_model/epoch50_acc_0.53679_kappa_0.52278_f1_0.76624.pth
+--store_embedings True
+
+TUEV - CBR data
+
+ --datasets_dir /media/public/Datasets/cbramod_data/TURV_refine/processed
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --infer_only True
+ --model_for_test /media/public/eshuranov/cbramod/models_weights/tuev_model/epoch13_acc_0.64498_kappa_0.65384_f1_0.81565.pth
+--store_embedings True
+ --n_chanels 23
+
+
+Mumtaz2016
+ --datasets_dir /media/public/Datasets/cbramod_data/MDDPHCED/processed_lmdb_75hz
+ --downstream_dataset Mumtaz2016
+ --num_of_classes 2
+ --infer_only True
+ --model_for_test /media/public/eshuranov/cbramod/models_weights/mumtaz_model/epoch23_acc_0.89249_pr_0.96553_roc_0.95913.pth
+--store_embedings True
+

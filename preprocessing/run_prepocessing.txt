@@ -1,0 +1,41 @@
+--out_dir /media/public/Datasets/cbramod_data/PHYSIO_NEW/processed_average
+--raw_dir /media/public/Datasets/original_datasets/PHYSIO/physionet.org/files
+
+
+
+  --root_dir "/media/public/Datasets/original_datasets/PHYSIO/physionet.org/files"
+  --out_dir "/media/public/Datasets/cbramod_data/PHYSIO_NEW/processed_average"
+  --map_size_gb 6
+  --seed 0
+  --sfreq 200
+  --l_freq 0.3
+  --notch 60
+  --win_sec 4
+  --take_last_n 800
+  --batch_commit 512
+  --n_train 70 --n_val 19 --n_test 20
+
+
+  --root_dir /media/public/Datasets/original_datasets/PHYSIO/physionet.org/files/eegmmidb/1.0.0
+  --out_dir  /media/public/Datasets/cbramod_data/PHYSIO_NEW/processed_average
+  --map_size_gb 6
+  --seed 0
+  --sfreq 200
+  --l_freq 0.3
+  --notch 60
+  --win_sec 4
+  --take_last_n 800
+  --batch_commit 512
+  --p_train 0.70 --p_val 0.19 --p_test 0.11
+
+
+
+
+  --root_dir /media/public/Datasets/original_datasets/PHYSIO/physionet.org/files/eegmmidb/1.0.0
+  --out_dir  /media/public/Datasets/cbramod_data/PHYSIO_NEW/processed_average
+  --map_size_gb 6
+  --seed 0
+  --sfreq 200 --l_freq 0.3 --notch 60
+  --win_sec 4 --take_last_n 800
+  --batch_commit 512
+  --p_train 0.70 --p_val 0.19 --p_test 0.11
