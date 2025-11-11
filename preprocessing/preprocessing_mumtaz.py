@@ -20,7 +20,7 @@ def iter_files(rootDir):
 selected_channels = ['EEG Fp1-LE', 'EEG Fp2-LE', 'EEG F3-LE', 'EEG F4-LE', 'EEG C3-LE', 'EEG C4-LE', 'EEG P3-LE',
                      'EEG P4-LE', 'EEG O1-LE', 'EEG O2-LE', 'EEG F7-LE', 'EEG F8-LE', 'EEG T3-LE', 'EEG T4-LE',
                      'EEG T5-LE', 'EEG T6-LE', 'EEG Fz-LE', 'EEG Cz-LE', 'EEG Pz-LE']
-rootDir = '/data/datasets/MDDPHCED/files'
+rootDir = '/media/public/Datasets/original_datasets/MDDPHCED/files'
 files_H, files_MDD = iter_files(rootDir)
 files_H = sorted(files_H)
 files_MDD = sorted(files_MDD)
@@ -53,7 +53,8 @@ print(files_dict['val'])
 print(files_dict['test'])
 
 
-db = lmdb.open('/data/datasets/MDDPHCED/processed_lmdb_75hz', map_size=1273741824)
+# db = lmdb.open('/data/datasets/MDDPHCED/processed_lmdb_75hz', map_size=1273741824)
+db = lmdb.open('/media/public/Datasets/original_datasets/MDDPHCED/processed_lmdb_75hz', map_size=1273741824)
 
 for files_key in files_dict.keys():
     for file in files_dict[files_key]:

@@ -159,3 +159,100 @@ Mumtaz2016
  --model_for_test /media/public/eshuranov/cbramod/models_weights/mumtaz_model/epoch23_acc_0.89249_pr_0.96553_roc_0.95913.pth
 --store_embedings True
 
+
+
+BCIC-IV-2a
+
+ --datasets_dir /media/public/Datasets/cbramod_data/BCICIV_2a/processed_inde_avg_03_50
+ --downstream_dataset BCIC-IV-2a
+ --num_of_classes 4
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/BCICIV_2a/epoch6_acc_0.51128_kappa_0.34838_f1_0.49324.pth
+--store_embedings True
+
+
+FACED
+
+ --datasets_dir /media/public/Datasets/cbramod_data/FACED/processed
+ --downstream_dataset FACED
+ --num_of_classes 9
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/FACED/epoch24_acc_0.57206_kappa_0.51567_f1_0.57515.pth
+--store_embedings True
+
+
+PhysioNet-MI 0.91acc
+
+ --datasets_dir /media/public/Datasets/cbramod_data/PHYSIO_NEW/processed_average
+ --downstream_dataset PhysioNet-MI
+ --num_of_classes 4
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/PHYSIO/epoch25_acc_0.62901_kappa_0.50529_f1_0.62921.pth
+--store_embedings True
+
+PhysioNet-MI 0.62acc
+
+ --datasets_dir /media/public/Datasets/cbramod_data/PHYSIO/processed_average
+ --downstream_dataset PhysioNet-MI
+ --num_of_classes 4
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/PHYSIO/epoch25_acc_0.62901_kappa_0.50529_f1_0.62921.pth
+--store_embedings True
+
+SHU-MI
+
+ --datasets_dir /media/public/Datasets/cbramod_data/SHU/processed
+ --downstream_dataset SHU-MI
+ --num_of_classes 2
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/SHU/epoch2_acc_0.64278_pr_0.69300_roc_0.70522.pth
+--store_embedings True
+
+
+ISRUC
+
+ --datasets_dir /media/public/Datasets/cbramod_data/ISRUC/precessed_filter_35
+ --downstream_dataset ISRUC
+ --num_of_classes 5
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/ISRUC/epoch30_acc_0.78478_kappa_0.74828_f1_0.80592.pth
+--store_embedings True
+
+
+CHBMIT
+
+ --datasets_dir /media/public/Datasets/cbramod_data/CHBMIT/processed_seg
+ --downstream_dataset CHB-MIT
+ --num_of_classes 2
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/CHBMIT/epoch1_acc_0.64737_pr_0.40782_roc_0.91126.pth
+--store_embedings True
+
+
+BCIC2020-3
+
+ --datasets_dir /media/public/Datasets/cbramod_data/Imagined_speech/processed
+ --downstream_dataset BCIC2020-3
+ --num_of_classes 5
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/Imagined_speech/epoch35_acc_0.34267_kappa_0.17833_f1_0.34191.pth
+--store_embedings True
+
+
+MentalArithmetic   STRESS
+
+ --datasets_dir /media/public/Datasets/cbramod_data/STRESS/processed
+ --downstream_dataset MentalArithmetic
+ --num_of_classes 2
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/MentalArithmetic/epoch6_acc_0.58681_pr_0.39910_roc_0.68996.pth
+--store_embedings True
+
+
+TUAB
+ --datasets_dir /media/public/Datasets/cbramod_data/TUAB/process_refine
+ --downstream_dataset TUAB
+ --num_of_classes 2
+ --infer_only True
+ --model_for_test /media/public/ckpts/CBR_chkpnts/TUAB/epoch28_acc_0.79356_pr_0.87840_roc_0.87549.pth
+--store_embedings True

@@ -25,12 +25,13 @@ class CustomDataset(Dataset):
         # print(label_path)
         seq = np.load(seq_path)
         label = np.load(label_path)
-        return seq, label
+        return seq, label, seq_path
 
     def collate(self, batch):
         x_seq = np.array([x[0] for x in batch])
         y_label = np.array([x[1] for x in batch])
-        return to_tensor(x_seq), to_tensor(y_label).long()
+        xs, ys, files = zip(*batch)
+        return to_tensor(x_seq), to_tensor(y_label).long(), list(files)
 
 
 class LoadDataset(object):

@@ -28,12 +28,13 @@ class CustomDataset(Dataset):
         data = pair['sample']
         label = pair['label']
         # print(label)
-        return data/100, label
+        return data/100, label, key
 
     def collate(self, batch):
         x_data = np.array([x[0] for x in batch])
         y_label = np.array([x[1] for x in batch])
-        return to_tensor(x_data), to_tensor(y_label)
+        xs, ys, files = zip(*batch)
+        return to_tensor(x_data), to_tensor(y_label).long(),  list(files)
 
 
 class LoadDataset(object):
