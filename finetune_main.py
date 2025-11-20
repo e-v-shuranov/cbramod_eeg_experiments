@@ -13,6 +13,25 @@ from models import model_for_faced, model_for_seedv, model_for_physio, model_for
 
 import os
 
+def parse_int_list(s: str) -> list[int]:
+    s = s.strip()
+    if not (s.startswith('[') and s.endswith(']')):
+        raise argparse.ArgumentTypeError(
+            "mast be format: [1, 2, 3]"
+        )
+
+    inner = s[1:-1].strip()
+    if not inner:
+        return []  # пустой список: "[]"
+
+    parts = inner.split(',')
+    try:
+        return [int(p.strip()) for p in parts]
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"Each element mast be int, example: [10, 2, 15, 2], not {s!r}"
+        )
+
 def main():
     parser = argparse.ArgumentParser(description='Big model downstream')
     parser.add_argument('--seed', type=int, default=3407, help='random seed (default: 0)')
@@ -73,6 +92,14 @@ def main():
 
     parser.add_argument('--store_embedings', type=bool,
                         default=False, help='should we store embedings?')
+
+    parser.add_argument('--is_chanle_shafle', type=bool,
+                        default=False, help='should we shaffle channels?')
+
+    parser.add_argument('--new_order', type=parse_int_list,
+                        default=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+                        help='List of int for new order of chanels: [10, 2, 15, 2]')
+
 
     params = parser.parse_args()
   #  params.use_pretrained_weights = False  # Не работает через параметры  :(

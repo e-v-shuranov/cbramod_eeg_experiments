@@ -256,3 +256,29 @@ TUAB
  --infer_only True
  --model_for_test /media/public/ckpts/CBR_chkpnts/TUAB/epoch28_acc_0.79356_pr_0.87840_roc_0.87549.pth
 --store_embedings True
+
+
+
+
+TUEV - CBR data experiments with shufle chanels
+
+ --datasets_dir /media/public/Datasets/cbramod_data/TURV_refine/processed
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --infer_only True
+ --model_for_test /media/public/eshuranov/cbramod/models_weights/tuev_model/epoch13_acc_0.64498_kappa_0.65384_f1_0.81565.pth
+--store_embedings True
+--path_emb /media/public/Datasets/emb_cbr/shuffle_ch_experiments
+--is_chanle_shafle True
+
+
+
+ --datasets_dir /media/public/Datasets/labram_data/TUEV/processed
+ --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_model
+ --downstream_dataset TUEV
+ --num_of_classes 6
+ --infer_only True
+ --model_for_test /media/public/eshuranov/cbramod/models_weights/tuev_model/epoch50_acc_0.53679_kappa_0.52278_f1_0.76624.pth
+--path_emb /media/public/Datasets/emb_cbr/shuffle_ch_experiments
+--is_chanle_shafle True
+--new_order "[ 3,  8,  7,  6,  9,  1, 14,  5, 13, 12,  0,  2, 10,  4, 15, 11]"
