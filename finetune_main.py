@@ -41,7 +41,8 @@ def main():
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate (default: 1e-3)')
     parser.add_argument('--weight_decay', type=float, default=5e-2, help='weight decay (default: 1e-2)')
     parser.add_argument('--optimizer', type=str, default='AdamW', help='optimizer (AdamW, SGD)')
-    parser.add_argument('--clip_value', type=float, default=1, help='clip_value')
+    parser.add_argument('--clip_value', type=float, default=0,
+                        help='Gradient norm clipping threshold; set 0 to disable')
     parser.add_argument('--dropout', type=float, default=0.1, help='dropout')
     parser.add_argument('--classifier', type=str, default='all_patch_reps',
                         help='[all_patch_reps, all_patch_reps_twolayer, '
@@ -75,6 +76,8 @@ def main():
                         help='foundation_dir')
     parser.add_argument('--use_cosine_warmup', type=bool,
                         default=False, help='use_cosine_warmup')
+    parser.add_argument('--use_scheduler', type=bool,
+                        default=True, help='use any lr scheduler (Cosine by default)')
 
 
     parser.add_argument('--infer_only', type=bool,

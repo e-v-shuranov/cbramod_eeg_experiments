@@ -70,26 +70,30 @@ class Trainer(object):
                                                  weight_decay=self.params.weight_decay)
 
         self.data_length = len(self.data_loader['train'])
-        if self.params.use_cosine_warmup:
-            self.total_steps = self.params.epochs * self.data_length
-            self.warmup_steps = int(0.10 * self.total_steps)  # 10%
-            self.decay_steps = max(1, self.total_steps - self.warmup_steps)  # 90%
-            self.lr_max = self.params.lr
-            self.lr_min = 1e-9
-            self.start_factor = self.lr_min / self.lr_max
-            warmup = torch.optim.lr_scheduler.LambdaLR(self.optimizer, lr_lambda=cosine_warmup_mult)
-            decay = torch.optim.lr_scheduler.CosineAnnealingLR(
-                self.optimizer, T_max=self.decay_steps, eta_min=self.lr_min
-            )
-            self.optimizer_scheduler = torch.optim.lr_scheduler.SequentialLR(
-                self.optimizer,
-                schedulers=[warmup, decay],
-                milestones=[self.warmup_steps]  # после этого шага переключится на decay
-            )
+        if self.params.use_scheduler:
+            if self.params.use_cosine_warmup:
+                self.total_steps = self.params.epochs * self.data_length
+                self.warmup_steps = int(0.10 * self.total_steps)  # 10%
+                self.decay_steps = max(1, self.total_steps - self.warmup_steps)  # 90%
+                self.lr_max = self.params.lr
+                self.lr_min = 1e-9
+                self.start_factor = self.lr_min / self.lr_max
+                warmup = torch.optim.lr_scheduler.LambdaLR(self.optimizer, lr_lambda=cosine_warmup_mult)
+                decay = torch.optim.lr_scheduler.CosineAnnealingLR(
+                    self.optimizer, T_max=self.decay_steps, eta_min=self.lr_min
+                )
+                self.optimizer_scheduler = torch.optim.lr_scheduler.SequentialLR(
+                    self.optimizer,
+                    schedulers=[warmup, decay],
+                    milestones=[self.warmup_steps]  # после этого шага переключится на decay
+                )
+            else:
+                self.optimizer_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+                    self.optimizer, T_max=self.params.epochs * self.data_length, eta_min=1e-9
+                )
         else:
-            self.optimizer_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-                # self.optimizer, T_max=self.params.epochs * self.data_length, eta_min=self.params.lr * 1e-3
-                self.optimizer, T_max = self.params.epochs * self.data_length, eta_min = 1e-9
+            self.optimizer_scheduler = torch.optim.lr_scheduler.LambdaLR(
+                self.optimizer, lr_lambda=lambda _step: 1.0
             )
 
         print(self.model)
@@ -172,25 +176,26 @@ class Trainer(object):
             with torch.no_grad():
                 acc, kappa, f1, cm = self.val_eval.get_metrics_for_multiclass(self.model)
                 acc_test, kappa_test, f1_test, cm_test = self.test_eval.get_metrics_for_multiclass(self.model)
+                current_lr = optim_state['param_groups'][0]['lr']
                 print(
-                    "Epoch {} : Training Loss: {:.5f}, acc: {:.5f}, kappa: {:.5f}, f1: {:.5f}, LR: {:.5f}, Time elapsed {:.2f} mins".format(
+                    "Epoch {} : Training Loss: {:.5f}, acc: {:.5f}, kappa: {:.5f}, f1: {:.5f}, LR: {:.2e}, Time elapsed {:.2f} mins".format(
                         epoch + 1,
                         np.mean(losses),
                         acc,
                         kappa,
                         f1,
-                        optim_state['param_groups'][0]['lr']*10000000,
+                        current_lr,
                         (timer() - start_time) / 60
                     )
                 )
                 print(
-                    "Epoch {} : Testing_ Loss: {:.5f}, acc: {:.5f}, kappa: {:.5f}, f1: {:.5f}, LR: {:.5f}, Time elapsed {:.2f} mins".format(
+                    "Epoch {} : Testing_ Loss: {:.5f}, acc: {:.5f}, kappa: {:.5f}, f1: {:.5f}, LR: {:.2e}, Time elapsed {:.2f} mins".format(
                         epoch + 1,
                         np.mean(losses),
                         acc_test,
                         kappa_test,
                         f1_test,
-                        optim_state['param_groups'][0]['lr']*100000000,
+                        current_lr,
                         (timer() - start_time) / 60
                     )
                 )
