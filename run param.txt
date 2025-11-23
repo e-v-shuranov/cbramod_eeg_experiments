@@ -296,3 +296,4 @@ TUEV - CBR data experiments with shufle chanels
 --model_dir /media/public/eshuranov/cbramod/models_weights/tuev_23_before_shafle
 --downstream_dataset TUEV
 --num_of_classes 6
+--use_scheduler False
