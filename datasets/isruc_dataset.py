@@ -10,10 +10,14 @@ import random
 class CustomDataset(Dataset):
     def __init__(
             self,
-            seqs_labels_path_pair
+            seqs_labels_path_pair,
+            is_chanle_shafle=False,
+            new_order=[]
     ):
         super(CustomDataset, self).__init__()
         self.seqs_labels_path_pair = seqs_labels_path_pair
+        self.is_chanle_shafle = is_chanle_shafle
+        self.new_order = new_order
 
     def __len__(self):
         return len((self.seqs_labels_path_pair))
@@ -24,6 +28,8 @@ class CustomDataset(Dataset):
         # print(seq_path)
         # print(label_path)
         seq = np.load(seq_path)
+        if self.is_chanle_shafle:
+            seq = seq[self.new_order]
         label = np.load(label_path)
         return seq, label, seq_path
 
@@ -43,9 +49,9 @@ class LoadDataset(object):
 
     def get_data_loader(self):
         train_pairs, val_pairs, test_pairs = self.split_dataset(self.seqs_labels_path_pair)
-        train_set = CustomDataset(train_pairs)
-        val_set = CustomDataset(val_pairs)
-        test_set = CustomDataset(test_pairs)
+        train_set = CustomDataset(train_pairs, is_chanle_shafle = self.params.is_chanle_shafle,new_order=self.params.new_order)
+        val_set = CustomDataset(val_pairs, is_chanle_shafle = self.params.is_chanle_shafle,new_order=self.params.new_order)
+        test_set = CustomDataset(test_pairs, is_chanle_shafle = self.params.is_chanle_shafle,new_order=self.params.new_order)
         print(len(train_set), len(val_set), len(test_set))
         print(len(train_set) + len(val_set) + len(test_set))
         data_loader = {

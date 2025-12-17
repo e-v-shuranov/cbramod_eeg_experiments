@@ -13,9 +13,13 @@ class CustomDataset(Dataset):
             self,
             data_dir,
             mode='train',
+            is_chanle_shafle=False,
+            new_order=[]
     ):
         super(CustomDataset, self).__init__()
         self.db = lmdb.open(data_dir, readonly=True, lock=False, readahead=True, meminit=False)
+        self.is_chanle_shafle = is_chanle_shafle
+        self.new_order = new_order
         with self.db.begin(write=False) as txn:
             self.keys = pickle.loads(txn.get('__keys__'.encode()))[mode]
 
@@ -27,6 +31,8 @@ class CustomDataset(Dataset):
         with self.db.begin(write=False) as txn:
             pair = pickle.loads(txn.get(key.encode()))
         data = pair['sample']
+        if self.is_chanle_shafle:
+            data = data[self.new_order]
         label = pair['label']
         # print(key)
         # print(data)
@@ -46,9 +52,9 @@ class LoadDataset(object):
         self.datasets_dir = params.datasets_dir
 
     def get_data_loader(self):
-        train_set = CustomDataset(self.datasets_dir, mode='train')
-        val_set = CustomDataset(self.datasets_dir, mode='val')
-        test_set = CustomDataset(self.datasets_dir, mode='test')
+        train_set = CustomDataset(self.datasets_dir, mode='train', is_chanle_shafle = self.params.is_chanle_shafle,new_order=self.params.new_order)
+        val_set = CustomDataset(self.datasets_dir, mode='val', is_chanle_shafle = self.params.is_chanle_shafle,new_order=self.params.new_order)
+        test_set = CustomDataset(self.datasets_dir, mode='test', is_chanle_shafle = self.params.is_chanle_shafle,new_order=self.params.new_order)
         print(len(train_set), len(val_set), len(test_set))
         print(len(train_set) + len(val_set) + len(test_set))
         data_loader = {
