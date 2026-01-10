@@ -169,8 +169,8 @@ class Trainer(object):
             losses = []
             for x, y, f in tqdm(self.data_loader['train'], mininterval=10):
                 self.optimizer.zero_grad()
-                x = x.cuda()
-                y = y.cuda()
+                x = x.cuda(non_blocking=True)
+                y = y.cuda(non_blocking=True)
                 pred = self.model(x)
                 if self.params.downstream_dataset == 'ISRUC':
                     loss = self.criterion(pred.transpose(1, 2), y)
@@ -305,8 +305,8 @@ class Trainer(object):
             losses = []
             for x, y, f in tqdm(self.data_loader['train'], mininterval=10):
                 self.optimizer.zero_grad()
-                x = x.cuda()
-                y = y.cuda()
+                x = x.cuda(non_blocking=True)
+                y = y.cuda(non_blocking=True)
                 pred = self.model(x)
 
                 loss = self.criterion(pred, y.float())
@@ -433,8 +433,8 @@ class Trainer(object):
             losses = []
             for x, y, f in tqdm(self.data_loader['train'], mininterval=10):
                 self.optimizer.zero_grad()
-                x = x.cuda()
-                y = y.cuda()
+                x = x.cuda(non_blocking=True)
+                y = y.cuda(non_blocking=True)
                 pred = self.model(x)
                 loss = self.criterion(pred, y)
 
