@@ -48,24 +48,38 @@ class LoadDataset(object):
         test_set = CustomDataset(self.datasets_dir, mode='test')
         print(len(train_set), len(val_set), len(test_set))
         print(len(train_set) + len(val_set) + len(test_set))
+        num_workers = getattr(self.params, "num_workers", 0)
+        pin_memory = torch.cuda.is_available()
+        worker_kwargs = {
+            "num_workers": num_workers,
+            "pin_memory": pin_memory,
+        }
+        if num_workers > 0:
+            worker_kwargs.update(
+                persistent_workers=True,
+                prefetch_factor=2,
+            )
         data_loader = {
             'train': DataLoader(
                 train_set,
                 batch_size=self.params.batch_size,
                 collate_fn=train_set.collate,
                 shuffle=True,
+                **worker_kwargs,
             ),
             'val': DataLoader(
                 val_set,
                 batch_size=self.params.batch_size,
                 collate_fn=val_set.collate,
                 shuffle=False,
+                **worker_kwargs,
             ),
             'test': DataLoader(
                 test_set,
                 batch_size=self.params.batch_size,
                 collate_fn=test_set.collate,
                 shuffle=False,
+                **worker_kwargs,
             ),
         }
         return data_loader
