@@ -41,6 +41,9 @@ class CustomDataset(Dataset):
         xs, ys, files = zip(*batch)
         return to_tensor(x_data), to_tensor(y_label).long(),  list(files)
 
+    def update_order(self, new_order):
+        self.new_order=new_order
+
 class LoadDataset(object):
     def __init__(self, params):
         self.params = params

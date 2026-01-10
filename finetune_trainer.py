@@ -139,10 +139,25 @@ class Trainer(object):
             )
 
             print(cm_eval)
+        return acc, acc_test, acc_eval
+
 
     def train_for_multiclass(self):
         if self.params.infer_only:
-            self.test_for_multiclass()
+            if self.params.is_chanle_shafle_multitest:
+                rs_list = []
+                for i in range(len(self.params.new_orders_list)):
+                    self.data_loader['train'].dataset.update_order(self.params.new_orders_list[i])
+                    self.data_loader['test'].dataset.update_order(self.params.new_orders_list[i])
+                    self.data_loader['val'].dataset.update_order(self.params.new_orders_list[i])
+                    # self.params.new_order = self.params.new_orders_list[i]
+                    r = self.test_for_multiclass()
+                    rs_list.append(r)
+                print([list(elem)[0] for elem in rs_list])
+                print([list(elem)[1] for elem in rs_list])
+                print([list(elem)[2] for elem in rs_list])
+            else:
+                print(self.test_for_multiclass())
             return
         f1_best = 0
         kappa_best = 0
@@ -274,6 +289,7 @@ class Trainer(object):
                 )
             )
             print(cm_eval)
+        return acc, acc_test, acc_eval
 
     def train_for_binaryclass(self):
         if self.params.infer_only:
@@ -287,13 +303,13 @@ class Trainer(object):
             self.model.train()
             start_time = timer()
             losses = []
-            for x, y in tqdm(self.data_loader['train'], mininterval=10):
+            for x, y, f in tqdm(self.data_loader['train'], mininterval=10):
                 self.optimizer.zero_grad()
                 x = x.cuda()
                 y = y.cuda()
                 pred = self.model(x)
 
-                loss = self.criterion(pred, y)
+                loss = self.criterion(pred, y.float())
 
                 loss.backward()
                 losses.append(loss.data.cpu().numpy())
@@ -402,7 +418,7 @@ class Trainer(object):
                     rmse_eval,
                 )
             )
-
+        return r2, r2_test, r2_eval
 
     def train_for_regression(self):
         if self.params.infer_only:
@@ -415,7 +431,7 @@ class Trainer(object):
             self.model.train()
             start_time = timer()
             losses = []
-            for x, y in tqdm(self.data_loader['train'], mininterval=10):
+            for x, y, f in tqdm(self.data_loader['train'], mininterval=10):
                 self.optimizer.zero_grad()
                 x = x.cuda()
                 y = y.cuda()

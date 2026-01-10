@@ -25,7 +25,7 @@ def reshuffle_first_axis(data: np.ndarray, seed: int | None = None) -> tuple[np.
     return data[order], order
 
 def main():
-    n_ch = 32
+    n_ch = 64
     order = derangement_indices(n_ch)
     from pprint import pprint
     pprint(order)

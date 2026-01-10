@@ -32,6 +32,37 @@ def parse_int_list(s: str) -> list[int]:
             f"Each element mast be int, example: [10, 2, 15, 2], not {s!r}"
         )
 
+import ast
+
+def parse_int_list2d(s: str) -> list[list[int]]:
+    s = s.strip()
+    try:
+        value = ast.literal_eval(s)
+    except (SyntaxError, ValueError):
+        raise argparse.ArgumentTypeError(
+            "must be format: [[1, 2], [3, 4]]"
+        )
+
+    if not isinstance(value, list):
+        raise argparse.ArgumentTypeError(
+            "must be format: [[1, 2], [3, 4]]"
+        )
+
+    out: list[list[int]] = []
+    for i, row in enumerate(value):
+        if not isinstance(row, list):
+            raise argparse.ArgumentTypeError(
+                f"Row {i} must be a list, example: [[1, 2], [3, 4]]"
+            )
+        try:
+            out.append([int(x) for x in row])
+        except (TypeError, ValueError):
+            raise argparse.ArgumentTypeError(
+                f"Each element must be int, example: [[10, 2], [15, 2]], not {s!r}"
+            )
+    return out
+
+
 def main():
     parser = argparse.ArgumentParser(description='Big model downstream')
     parser.add_argument('--seed', type=int, default=3407, help='random seed (default: 0)')
@@ -101,7 +132,14 @@ def main():
 
     parser.add_argument('--new_order', type=parse_int_list,
                         default=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-                        help='List of int for new order of chanels: [10, 2, 15, 2]')
+                        help='List of int for new order of chanels: [2, 1, 3, 0]')
+
+    parser.add_argument('--is_chanle_shafle_multitest', type=bool,
+                        default=False, help='should we run 10 shaffle tests?')
+
+    parser.add_argument('--new_orders_list', type=parse_int_list2d,
+                        default=[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]],
+                        help='List of Lists int for new orders of chanels: [[2, 1, 3, 0],[1, 3, 0, 2]]')
 
 
     params = parser.parse_args()
@@ -210,4 +248,12 @@ def setup_seed(seed):
 
 
 if __name__ == '__main__':
+    # import torch
+    # import torch.nn as nn
+    #
+    # loss = nn.BCEWithLogitsLoss()
+    # input = torch.randn(3, requires_grad=True)
+    # target = torch.empty(3).random_(2)
+    # output = loss(input, target)
+    # output.backward()
     main()
