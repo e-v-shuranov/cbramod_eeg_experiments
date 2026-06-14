@@ -11,7 +11,7 @@ import csv
 import json
 import os
 
-from experiments.channel_c2_joint_perm import parse_channel_names, parse_int_list
+from experiments.channel_common import parse_channel_names, parse_int_list
 from experiments.channel_permutation import make_permutation
 
 

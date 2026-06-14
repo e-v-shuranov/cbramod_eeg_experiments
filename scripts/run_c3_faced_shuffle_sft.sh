@@ -8,6 +8,7 @@ CONDA_BIN="${CONDA_BIN:-/home/eshuranov/miniconda3/bin/conda}"
 CONDA_ENV="${CONDA_ENV:-cbramod}"
 CUDA_ID="${CUDA_ID:-0}"
 
+# C3 with supervised fine-tuning after channel-assignment corruption.
 # Conservative first run. Full run: PERM_SEEDS="0,1,2,3,4" bash scripts/run_c3_faced_shuffle_sft.sh
 PERM_SEEDS="${PERM_SEEDS:-0}"
 PERM_SEEDS="${PERM_SEEDS//,/ }"

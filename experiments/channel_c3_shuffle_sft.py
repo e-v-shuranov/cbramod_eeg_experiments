@@ -15,10 +15,11 @@ import os
 
 import numpy as np
 
-from experiments.channel_c2_joint_perm import (
+from experiments.channel_common import (
     DATASETS,
     DATASET_NAMES,
     build_params,
+    compute_metrics,
     load_eval_loader,
     load_model,
     load_project_modules,
@@ -41,8 +42,6 @@ def evaluate_with_optional_corruption(
     perm: list[int] | None,
 ) -> dict:
     import torch
-
-    from experiments.channel_c2_joint_perm import compute_metrics
 
     truths = []
     preds = []

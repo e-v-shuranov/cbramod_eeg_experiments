@@ -60,7 +60,7 @@ class ChannelPermutationTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             apply_joint_permutation(x, ["Fz", "Cz", "Pz"], perm=[0, 0, 1])
 
-    def test_c3_signal_permutation_keeps_metadata_fixed(self):
+    def test_signal_permutation_keeps_metadata_fixed(self):
         x = np.array([[[10], [20], [30]]])
         meta = {"channel_names": ["Fz", "Cz", "Pz"]}
 
@@ -74,7 +74,7 @@ class ChannelPermutationTest(unittest.TestCase):
         np.testing.assert_array_equal(x_bad[0, :, 0], np.array([30, 10, 20]))
         self.assertEqual(meta_fixed["channel_names"], ["Fz", "Cz", "Pz"])
 
-    def test_c3_metadata_permutation_keeps_signal_fixed(self):
+    def test_metadata_permutation_keeps_signal_fixed(self):
         x = np.array([[[10], [20], [30]]])
         meta = {"channel_names": ["Fz", "Cz", "Pz"]}
 
