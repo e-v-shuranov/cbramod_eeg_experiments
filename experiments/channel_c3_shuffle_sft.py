@@ -102,6 +102,8 @@ def write_rows(output: str, rows: list[dict], append: bool) -> None:
         "seed",
         "perm_seed",
         "permutation",
+        "channel_names_original",
+        "signal_source_channel_names_after_shuffle",
         "baseline_checkpoint",
         "shuffled_sft_checkpoint",
         "finetune_epochs",
@@ -203,6 +205,10 @@ def run(args: argparse.Namespace) -> list[dict]:
                 "seed": args.seed,
                 "perm_seed": perm_seed,
                 "permutation": json.dumps(perm),
+                "channel_names_original": json.dumps(channel_names),
+                "signal_source_channel_names_after_shuffle": json.dumps(
+                    [channel_names[idx] for idx in perm]
+                ),
                 "baseline_checkpoint": args.baseline_checkpoint,
                 "shuffled_sft_checkpoint": args.shuffled_sft_checkpoint,
                 "finetune_epochs": args.finetune_epochs,
