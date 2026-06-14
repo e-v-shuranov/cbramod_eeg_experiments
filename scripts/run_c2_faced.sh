@@ -12,7 +12,17 @@ OUTPUT_DIR="${PROJECT_ROOT}/results/channel"
 OUTPUT_CSV="${OUTPUT_DIR}/c2_joint_permutation.csv"
 LOG_FILE="${OUTPUT_DIR}/c2_FACED.log"
 CHANNEL_NAMES_FILE="${CHANNEL_NAMES_FILE:-${PROJECT_ROOT}/configs/channel_names/FACED.txt}"
+PERM_SEEDS="${PERM_SEEDS:-0,1,2,3,4}"
+SHUFFLE_PLAN_CSV="${OUTPUT_DIR}/c2_FACED_shuffle_plan.csv"
 mkdir -p "${OUTPUT_DIR}"
+
+"${CONDA_BIN}" run -n "${CONDA_ENV}" --no-capture-output \
+  python -m experiments.export_channel_shuffle_plan \
+  --dataset FACED \
+  --n-channels 32 \
+  --channel-names "${CHANNEL_NAMES_FILE}" \
+  --perm-seeds "${PERM_SEEDS}" \
+  --output "${SHUFFLE_PLAN_CSV}"
 
 "${CONDA_BIN}" run -n "${CONDA_ENV}" --no-capture-output \
   python -m experiments.channel_c2_joint_perm \
@@ -24,7 +34,7 @@ mkdir -p "${OUTPUT_DIR}"
   --n-channels 32 \
   --channel-names "${CHANNEL_NAMES_FILE}" \
   --split test \
-  --perm-seeds 0,1,2,3,4 \
+  --perm-seeds "${PERM_SEEDS}" \
   --seed 0 \
   --cuda "${CUDA_ID}" \
   --batch-size 64 \

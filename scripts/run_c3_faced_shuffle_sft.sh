@@ -21,6 +21,7 @@ MODEL_ROOT="${MODEL_ROOT:-/media/public/ckpts/CBR_chkpnts_for_shufle_track/FACED
 RUN_DIR="${RUN_DIR:-${PROJECT_ROOT}/results/channel/c3_faced_shuffle_sft_$(date +%Y%m%d_%H%M%S)}"
 RESULT_CSV="${RESULT_CSV:-${PROJECT_ROOT}/results/channel/c3_shuffle_sft_recovery.csv}"
 CHANNEL_NAMES_FILE="${CHANNEL_NAMES_FILE:-${PROJECT_ROOT}/configs/channel_names/FACED.txt}"
+SHUFFLE_PLAN_CSV="${RUN_DIR}/shuffle_plan.csv"
 CHANNEL_NAMES_ARG=()
 if [[ -n "${CHANNEL_NAMES_FILE:-}" ]]; then
   CHANNEL_NAMES_ARG=(--channel-names "${CHANNEL_NAMES_FILE}")
@@ -84,6 +85,15 @@ log "CUDA_ID=${CUDA_ID}, EPOCHS=${EPOCHS}, BATCH_SIZE=${BATCH_SIZE}"
 write_status "started: 0/${TOTAL} seeds complete; current=initializing; eta=unknown; log=${LOG_FILE}"
 
 rm -f "${RESULT_CSV}"
+
+"${CONDA_BIN}" run -n "${CONDA_ENV}" --no-capture-output \
+  python -m experiments.export_channel_shuffle_plan \
+  --dataset FACED \
+  --n-channels 32 \
+  --channel-names "${CHANNEL_NAMES_FILE}" \
+  --perm-seeds "${PERM_SEEDS// /,}" \
+  --output "${SHUFFLE_PLAN_CSV}"
+log "Shuffle plan with indices and names: ${SHUFFLE_PLAN_CSV}"
 
 DONE=0
 for PERM_SEED in "${SEEDS[@]}"; do
