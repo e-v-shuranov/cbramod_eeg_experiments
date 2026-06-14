@@ -2,19 +2,19 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-RUN_DIR="${RUN_DIR:-${PROJECT_ROOT}/results/channel/c2_faced_finetune_$(date +%Y%m%d_%H%M%S)}"
+RUN_DIR="${RUN_DIR:-${PROJECT_ROOT}/results/channel/c3_faced_shuffle_sft_$(date +%Y%m%d_%H%M%S)}"
 mkdir -p "${RUN_DIR}"
 
 export RUN_DIR
 
-nohup bash "${PROJECT_ROOT}/scripts/run_c2_faced_finetune.sh" \
+nohup bash "${PROJECT_ROOT}/scripts/run_c3_faced_shuffle_sft.sh" \
   > "${RUN_DIR}/nohup.out" 2>&1 &
 
 PID="$!"
 echo "${PID}" > "${RUN_DIR}/pid.txt"
 
 cat <<EOF
-Started FACED C2 fine-tune diagnostic in background.
+Started FACED C3 shuffle-then-SFT diagnostic in background.
 PID: ${PID}
 Run dir: ${RUN_DIR}
 Status: ${RUN_DIR}/status.txt

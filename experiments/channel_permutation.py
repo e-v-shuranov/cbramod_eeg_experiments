@@ -73,10 +73,46 @@ def apply_joint_permutation(
     perm: Sequence[int],
     channel_axis: int = 1,
 ) -> tuple[Any, Any]:
-    """Permute signal channels and their metadata together for C2."""
+    """C2: permute EEG signal channels and channel metadata together.
+
+    This preserves the physical signal-channel correspondence:
+    x[:, i, ...] keeps the metadata that used to describe x[:, i, ...].
+    """
     x_perm = permute_signal_channels(x, perm=perm, channel_axis=channel_axis)
     meta_perm = permute_channel_metadata(channel_meta, perm=perm)
     return x_perm, meta_perm
+
+
+def corrupt_channel_assignment_by_signal_permutation(
+    x: Any,
+    channel_meta: Any,
+    perm: Sequence[int],
+    channel_axis: int = 1,
+) -> tuple[Any, Any]:
+    """C3 for implicit-order models: permute EEG signals, keep metadata fixed.
+
+    CBraMod in this repository does not pass channel names/coordinates into
+    ``model.forward``. The tensor channel index is therefore the model's implicit
+    channel label. Permuting ``x`` while leaving metadata/model order unchanged
+    assigns each signal to the wrong implicit channel label.
+    """
+    x_perm = permute_signal_channels(x, perm=perm, channel_axis=channel_axis)
+    return x_perm, channel_meta
+
+
+def corrupt_channel_assignment_by_metadata_permutation(
+    x: Any,
+    channel_meta: Any,
+    perm: Sequence[int],
+) -> tuple[Any, Any]:
+    """C3 for explicit-metadata models: permute metadata, keep EEG data fixed.
+
+    Use this form for models that actually consume channel labels/coordinates.
+    It is the literal "change channel labels while leaving EEG samples untouched"
+    variant.
+    """
+    meta_perm = permute_channel_metadata(channel_meta, perm=perm)
+    return x, meta_perm
 
 
 def _looks_channel_aligned(value: Any, n_channels: int) -> bool:
