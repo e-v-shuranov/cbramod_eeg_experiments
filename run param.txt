@@ -533,12 +533,9 @@ SHU  # используем те же шафлы 32 каналов как и в 
 [ 6, 30,  3,  4, 17,  1, 31,  5, 10, 22,  0,  8, 21, 20, 16, 14, 26, 18, 25, 28,  9, 27, 19, 15, 12,  7,  2, 29, 23, 11, 24, 13]]"
 
 
-CHB-MIT воспроизведение
-
-
---cuda=0
+CHB-MIT воспроизведение--cuda=0
 --epochs=50
---batch_size=2500
+--batch_size=512
 --lr=0.0001
 --weight_decay=0.05
 --optimizer=AdamW
@@ -554,6 +551,9 @@ CHB-MIT воспроизведение
 --multi_lr=True
 --frozen=False
 --use_pretrained_weights=True
+
+
+
 --is_chanle_shafle True
 --new_order "[ 3,  8,  7,  6,  9,  1, 14,  5, 13, 12,  0,  2, 10,  4, 15, 11]"
 
