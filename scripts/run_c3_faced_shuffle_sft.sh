@@ -20,6 +20,7 @@ BASELINE_CKPT="${BASELINE_CKPT:-/media/public/ckpts/CBR_chkpnts_for_shufle_track
 MODEL_ROOT="${MODEL_ROOT:-/media/public/ckpts/CBR_chkpnts_for_shufle_track/FACED_c3_shuffle_sft}"
 RUN_DIR="${RUN_DIR:-${PROJECT_ROOT}/results/channel/c3_faced_shuffle_sft_$(date +%Y%m%d_%H%M%S)}"
 RESULT_CSV="${RESULT_CSV:-${PROJECT_ROOT}/results/channel/c3_shuffle_sft_recovery.csv}"
+CHANNEL_NAMES_FILE="${CHANNEL_NAMES_FILE:-${PROJECT_ROOT}/configs/channel_names/FACED.txt}"
 CHANNEL_NAMES_ARG=()
 if [[ -n "${CHANNEL_NAMES_FILE:-}" ]]; then
   CHANNEL_NAMES_ARG=(--channel-names "${CHANNEL_NAMES_FILE}")

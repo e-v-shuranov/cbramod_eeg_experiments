@@ -11,6 +11,7 @@ CUDA_ID="${CUDA_ID:-0}"
 OUTPUT_DIR="${PROJECT_ROOT}/results/channel"
 OUTPUT_CSV="${OUTPUT_DIR}/c2_joint_permutation.csv"
 LOG_FILE="${OUTPUT_DIR}/c2_FACED.log"
+CHANNEL_NAMES_FILE="${CHANNEL_NAMES_FILE:-${PROJECT_ROOT}/configs/channel_names/FACED.txt}"
 mkdir -p "${OUTPUT_DIR}"
 
 "${CONDA_BIN}" run -n "${CONDA_ENV}" --no-capture-output \
@@ -21,6 +22,7 @@ mkdir -p "${OUTPUT_DIR}"
   --checkpoint /media/public/ckpts/CBR_chkpnts_for_shufle_track/FACED_baseline/epoch38_acc_0.56347_kappa_0.50726_f1_0.56972.pth \
   --num-of-classes 9 \
   --n-channels 32 \
+  --channel-names "${CHANNEL_NAMES_FILE}" \
   --split test \
   --perm-seeds 0,1,2,3,4 \
   --seed 0 \
