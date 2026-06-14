@@ -330,12 +330,16 @@ def write_rows(output: str, rows: list[dict]) -> None:
         "checkpoint",
         "notes",
     ]
-    write_header = not os.path.exists(output)
-    with open(output, "a", newline="", encoding="utf-8") as handle:
+    mode = "a" if rows[0].get("append", False) else "w"
+    write_header = mode == "w" or not os.path.exists(output)
+    with open(output, mode, newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         if write_header:
             writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows(
+            {key: value for key, value in row.items() if key in fieldnames}
+            for row in rows
+        )
 
 
 def run(args: argparse.Namespace) -> list[dict]:
@@ -409,6 +413,7 @@ def run(args: argparse.Namespace) -> list[dict]:
                     permuted_meta["channel_names"]
                 ),
                 "checkpoint": args.checkpoint,
+                "append": args.append,
                 "notes": (
                     "CBraMod wrapper records jointly permuted metadata; this repo "
                     "does not pass channel metadata into the model forward call."
@@ -445,6 +450,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output",
         default="results/channel/c2_joint_permutation.csv",
+    )
+    parser.add_argument(
+        "--append",
+        action="store_true",
+        help="Append rows to an existing CSV instead of overwriting it.",
     )
     return parser
 
